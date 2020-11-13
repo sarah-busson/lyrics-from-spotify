@@ -1,15 +1,15 @@
 """
 Step 1 
-Connect to Spotify and GET Player
+Get the song currently playing on Spotify
 
 Step 2
-Scrap the lyrics (on google)
+Get the lyrics via Genius
 
 Step 3
 Connect to WhatsApp and send the lyrics
 
 Step 4
--> Do this for every song or for a playlist called SongstoSing??
+Do this for every song playedd in the Karaoke playlist
 """
 import json
 import os
@@ -18,13 +18,17 @@ from spotipy.oauth2 import SpotifyOAuth
 import pandas as pd
 import re
 import lyricsgenius
+from twilio.rest import Client 
+import time
 
 class GetLyrics:
 
     def __init__(self):
         self.sp = self.get_spotify_auth()
+        self.client = self.get_twilio_auth()
+        self.track_name, self.track_artist, self.playlist = self.get_playing_song()
 
-# Step 0: Set up the Spotify Authorization
+# Step 0: Set up the Spotify and Twilio Authorization
     def get_spotify_auth(self):
         spotify_client = os.environ.get('SPOTIFY_CLIENT')
         spotify_secret = os.environ.get('SPOTIFY_SECRET')
@@ -33,11 +37,18 @@ class GetLyrics:
                                                redirect_uri='http://localhost:8888/callback/',
                                                scope='user-read-currently-playing'))
         return sp
+
+    def get_twilio_auth(self):
+        account_sid = os.environ.get('TWILIO_ACCOUNT')
+        auth_token = os.environ.get('TWILIO_TOKEN') 
+        client = Client(account_sid, auth_token) 
+        return client
+ 
 # Step 1: Get the song currently playing on Spotify
     def get_playing_song(self):
         #SPOTIFY REQUEST
         current_song = self.sp.currently_playing(market='FR', additional_types='track')
-        flat_df = pd.io.json.json_normalize(current_song)
+        flat_df = pd.json_normalize(current_song)
         #TRACK NAME
         track_name = flat_df['item.name'][0]
         #TRACK ARTIST (only the main artist)
@@ -45,7 +56,7 @@ class GetLyrics:
         #PLAYLIST
         """Has to be played from a playlist, not from 'Liked Songs',
         json response is a different format"""
-        playlist = re.split(':', flat_df['context.uri'][0])[2]
+        playlist = re.split('/', flat_df['context.href'][0])[5]
 
         return track_name, track_artist, playlist
     
@@ -55,14 +66,29 @@ class GetLyrics:
         track_name, track_artist, playlist = self.get_playing_song()
         song = genius.search_song(track_name, track_artist, get_full_info=False)
         lyrics = song.lyrics
-        return print(lyrics)
+        return lyrics
 
-"""# Step 3: Send the lyrics via WhatsApp
-    def send_lyrics(self, lyrics):
-        print(lyrics)"""
-
-
+# Step 3: Send the lyrics via WhatsApp
+    def send_lyrics(self):
+        track_name, track_artist, playlist = self.get_playing_song()
+        lyrics = self.get_lyrics()
+        karaoke = 'Karaoke time! 🎙\nPlaying {} from {}\n\n{}'.format(track_name, track_artist, lyrics)
+        if len(karaoke) >= 1600:
+            message1 = self.client.messages.create(
+                     from_= 'whatsapp:+14155238886', #TWILIO's WhatsApp number 
+                     body= karaoke[:1500],   
+                     to= 'whatsapp:' + os.environ.get('SARAH_NUMBER')) 
+            message2 = self.client.messages.create(
+                     from_= 'whatsapp:+14155238886', #TWILIO's WhatsApp number 
+                     body= karaoke[1500:],   
+                     to= 'whatsapp:' + os.environ.get('SARAH_NUMBER')) 
+        else:
+            message = self.client.messages.create(
+                     from_= 'whatsapp:+14155238886', #TWILIO's WhatsApp number 
+                     body= karaoke,   
+                     to= 'whatsapp:' + os.environ.get('SARAH_NUMBER')) 
 
 if __name__ == '__main__':
     gl = GetLyrics()
-    gl.get_lyrics()
+    if gl.playlist == '7tPSBvTBEh7qJ4X192u9uP': #Karaoke playlist ID on my Spotify account
+        gl.send_lyrics()
