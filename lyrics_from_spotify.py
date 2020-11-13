@@ -73,7 +73,7 @@ class GetLyrics:
         track_name, track_artist, playlist = self.get_playing_song()
         lyrics = self.get_lyrics()
         karaoke = 'Karaoke time! 🎙\nPlaying {} from {}\n\n{}'.format(track_name, track_artist, lyrics)
-        if len(karaoke) >= 1600:
+        if len(karaoke) >= 1600: #text limit is 1600 characters
             message1 = self.client.messages.create(
                      from_= 'whatsapp:+14155238886', #TWILIO's WhatsApp number 
                      body= karaoke[:1500],   
