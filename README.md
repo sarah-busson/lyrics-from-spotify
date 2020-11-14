@@ -1,8 +1,9 @@
 # Karaoke Project
-
+By Sarah Busson, last updated on 14/11/20
+  
 *This is a side project only for personal purpose.*
 *My main goal was to reinforce my knowledge and work on topics I used to struggle with such as OOP and APIs.*
-
+  
 ![Vegas Illu](20180811_015338.jpg)
 
 ## Content
@@ -14,16 +15,16 @@
 
 Well, I love music! I tried to canceled my Spotify Premium account once... I subscribed again after only a week!   
 Which is why I wanted to realise a small and fun project related to music. See, now that all bars and clubs are closed I really miss dancing and singing (also because I'm a terrible singer and that way no one can hear me!) but it really annoyed me to pause my playlist, look for the song's lyrics online, skip the ads ...  
-It's sounds like a huge waste of time and I wanted to automate those tasks so I can still enjoy singing while doing something else like cooking for example!
+It sounds like a huge waste of time and I wanted to automate those tasks so I can still enjoy singing while doing something else like cooking for example!
 
 ##### *So here's the project idea :*
 * Connect from my Spotify own account and collect the title, artist and playlist currently playing;
 * Perform a search on the Genius website and collect the lyrics of the song playing;
 * Using Twilio, send the lyrics via text message on WhatsApp;
 * Use a loop so the program detect when a new song is playing and sends the new lyrics.
-
+  
 ![functionning app](karaoke_app3.png)
-
+  
 ## Ressources
 
 #### *SPOTIFY WEB API*:
@@ -41,6 +42,7 @@ In my project, I used the Python library [LyricsGenius](https://lyricsgenius.rea
 
 #### *TWILIO SANDBOX*:
 Twilio is a communication API that I used to send the lyrics on my phone. [Twilio Sandbox](https://www.twilio.com/console/sms/whatsapp/sandbox) is the console used to connect to the WhatsApp platform.   
+  
 To set it up:
 * Create a free trial account to get your account ID and token
 * Connect your number (or someone else's) to the Sanbox by sending 'join eight-shall' to the Twilio phone number
