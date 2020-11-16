@@ -48,7 +48,7 @@ To set it up:
 * Connect your number (or someone else's) to the Sanbox by sending 'join eight-shall' to the Twilio phone number
 * You can then personnalize your text message before sending it.
 
-*Note: Sandbox are a developer tool to test an app. Though it is a very simple process, you'll need to renew your connection after 3 days of use.*
+*Note: Sandbox is a developer tool to test an app. Though it is a very simple process, you'll need to renew your connection after 3 days of use.*
 
 ## Notes
 
