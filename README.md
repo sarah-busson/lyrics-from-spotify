@@ -45,7 +45,7 @@ Twilio is a communication API that I used to send the lyrics on my phone. [Twili
   
 To set it up:
 * Create a free trial account to get your account ID and token
-* Connect your number (or someone else's) to the Sanbox by sending 'join eight-shall' to the Twilio phone number
+* Connect your number (or someone else's) to the Sanbox by sending the provided text code to the Twilio phone number
 * You can then personnalize your text message before sending it.
 
 *Note: Sandbox is a developer tool to test an app. Though it is a very simple process, you'll need to renew your connection after 3 days of use.*
