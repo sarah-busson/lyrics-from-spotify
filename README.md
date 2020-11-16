@@ -1,5 +1,5 @@
 # Karaoke Project
-By Sarah Busson, last updated on 14/11/20
+By Sarah Busson, last updated on 16/11/20
   
 *This is a side project only for personal purpose.*
 *My main goal was to reinforce my knowledge and work on topics I used to struggle with such as OOP and APIs.*
@@ -48,6 +48,7 @@ To set it up:
 * Connect your number (or someone else's) to the Sanbox by sending 'join eight-shall' to the Twilio phone number
 * You can then personnalize your text message before sending it.
 
+*Note: Sandbox are a developer tool to test an app. Though it is a very simple process, you'll need to renew your connection after 3 days of use.*
 
 ## Notes
 
