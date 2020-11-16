@@ -26,7 +26,6 @@ class GetLyrics:
     def __init__(self):
         self.sp = self.get_spotify_auth()
         self.client = self.get_twilio_auth()
-        self.track_name, self.track_artist, self.playlist = self.get_playing_song()
 
 # Step 0: Set up the Spotify and Twilio Authorization
     def get_spotify_auth(self):
@@ -71,37 +70,37 @@ class GetLyrics:
 # Step 3: Send the lyrics via WhatsApp
     def send_lyrics(self):
         track_name, track_artist, playlist = self.get_playing_song()
-
         lyrics_gross = self.get_lyrics()
+
         lyrics = re.sub('\[.*\]', '\n', lyrics_gross)
         lyrics = re.sub('\n\n+', '\n\n', lyrics)
 
-        karaoke = 'Karaoke time! 🎙\nPlaying {} from {}{}'.format(track_name, track_artist, lyrics)
+        karaoke = 'Karaoke time! 🎙\nPlaying {} from {} {}'.format(track_name, track_artist, lyrics)
         if len(karaoke) > 4199 : #text limit is 1600 characters
             message1 = self.client.messages.create(
                      from_= 'whatsapp:+14155238886', #TWILIO's WhatsApp number 
                      body= karaoke[:1599],
                      to= 'whatsapp:' + os.environ.get('SARAH_NUMBER')) 
             message2 = self.client.messages.create(
-                     from_= 'whatsapp:+14155238886', #TWILIO's WhatsApp number 
+                     from_= 'whatsapp:+14155238886', 
                      body= karaoke[1599:3199],   
                      to= 'whatsapp:' + os.environ.get('SARAH_NUMBER'))
             message3 = self.client.messages.create(
-                     from_= 'whatsapp:+14155238886', #TWILIO's WhatsApp number 
+                     from_= 'whatsapp:+14155238886', 
                      body= karaoke[3199:],   
                      to= 'whatsapp:' + os.environ.get('SARAH_NUMBER')) 
         elif len(karaoke) > 1599 :
             message1 = self.client.messages.create(
-                     from_= 'whatsapp:+14155238886', #TWILIO's WhatsApp number 
+                     from_= 'whatsapp:+14155238886', 
                      body= karaoke[:1599],
                      to= 'whatsapp:' + os.environ.get('SARAH_NUMBER')) 
             message2 = self.client.messages.create(
-                     from_= 'whatsapp:+14155238886', #TWILIO's WhatsApp number 
+                     from_= 'whatsapp:+14155238886',
                      body= karaoke[1599:],   
                      to= 'whatsapp:' + os.environ.get('SARAH_NUMBER'))
         else:
             message = self.client.messages.create(
-                     from_= 'whatsapp:+14155238886', #TWILIO's WhatsApp number 
+                     from_= 'whatsapp:+14155238886', 
                      body= karaoke,   
                      to= 'whatsapp:' + os.environ.get('SARAH_NUMBER')) 
 
